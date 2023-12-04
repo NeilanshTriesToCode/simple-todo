@@ -1,15 +1,15 @@
 // file to connect to db and other db-related methods
 const { MongoClient } = require('mongodb');
 const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');   // to encrypt passwords
+const bcrypt = require('bcryptjs');     // to encrypt passwords
 
 const url = process.env.ATLAS_URL;
 
 // create MongoDB client to connect to the DB
 const client = new MongoClient(url);
 
-var db;        // database
-var usersDB;  // "Users" Collection containing users info
+var db;        // to contain the database object
+var usersDB;  // to contain reference to the "Users" Collection containing users info
 
 // function to connect to the DB
 const connectToServer = () => {
