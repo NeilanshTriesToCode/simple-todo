@@ -18,8 +18,20 @@ const connectToServer = () => {
         }); 
 };
 
+// function to signup/create user
+const signupUser = () => {
+    
+};
+
+// function to login user
+const loginUser = () => {
+
+};
+
 
 module.exports = {
     connectToServer,
-}
+    signupUser, 
+    loginUser,
+};
 
