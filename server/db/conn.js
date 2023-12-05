@@ -53,7 +53,7 @@ const signupUser = async (username, email, password) => {
     // create an account by
     // inserting document into the "Users" Collection
     try{
-        let result = await getUsersDB().insertOne(newUser);
+        let result = await usersDB.insertOne(newUser);
         if(result.acknowledged){
             console.log('\nUser added to DB.');
             return true;
@@ -69,30 +69,35 @@ const loginUser = async (email, password) => {
     // for hashing
     var salt = bcrypt.genSaltSync(10);
 
-    // validate user credentials
-    try{
-        let userID = await getUsersDB().findOne({
+    // validate user credentials 
+        usersDB.findOne({
             email: email,
-            password: await bcrypt.hash(password, salt)
+        })
+        .then(user => {
+            if(user){
+                console.log('\nLogin successful.');
+                console.log(user);
+                /*
+                  NOTE: 
+                  - Later on, after login is successful, this function can return a JSON Object
+                    containing all the user info so that it could be used on the client side's (ReactJS)
+                    global Context. 
+                  - Since findOne() already returns the userID, can use this to return all the details to the client, 
+                    which could be used in the client's Context.
+                  - For now, only returning a boolean.
+               */
+                return true;
+            }
+            else{
+                console.log('\nInvalid user creds.');
+                console.log(user);
+                return false;
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            return false;
         });
-
-        if(userID){
-            console.log('\nLogin successful.');
-             /*
-              NOTE: 
-              - Later on, after login is successful, this function can return a JSON Object
-              containing all the user info so that it could be used on the client side's (ReactJS)
-              global Context. 
-              - Since findOne() already returns the userID, can use this to return all the details to the client, 
-              which could be used in the client's Context.
-              - For now, only returning a boolean.
-            */
-            return true;
-        }
-    }catch(err){
-        console.log(err);
-        return false;
-    }
 };
 
 
