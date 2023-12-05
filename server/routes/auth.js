@@ -17,8 +17,8 @@ signupRouter.post('/signup', async (req, res) => {
     .then(output => {
         console.log('output', output);
         if(output){
-            console.log('\nSignup successful.');
-            res.status(200).send('User created.');
+            console.log('\nSign-up successful.');
+            res.status(200).send('Signed-up successfully.');
         }
         else{
             res.status(500).send('An unknown error occurred.');
@@ -45,6 +45,7 @@ loginRouter.post('/login', async (req, res) => {
             res.status(200).send('User is logged in.');
         }
         else{
+            console.log('Invalid credentials.');
             res.status(401).send('Invalid credentials.');
         } 
     });
