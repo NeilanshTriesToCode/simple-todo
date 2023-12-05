@@ -39,11 +39,14 @@ const getUsersDB = () => {
 
 // function to signup/create user
 const signupUser = async (username, email, password) => {
+    // for hashing
+    var salt = bcrypt.genSaltSync(10);
+
     // prepare document to be inserted
     let newUser = {
         username: username,
         email: email,
-        password: bcrypt.hash(password),
+        password: bcrypt.hash(password, salt),
         tasks: []
     };
 
@@ -52,7 +55,7 @@ const signupUser = async (username, email, password) => {
     try{
         let result = await getUsersDB().insertOne(newUser);
         if(result.acknowledged){
-            console.log('\nuser added to DB.');
+            console.log('\nUser added to DB.');
             return true;
         }
     }catch(err){
