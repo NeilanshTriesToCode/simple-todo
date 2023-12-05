@@ -65,8 +65,34 @@ const signupUser = async (username, email, password) => {
 };
 
 // function to login user
-const loginUser = () => {
+const loginUser = async (email, password) => {
+    // for hashing
+    var salt = bcrypt.genSaltSync(10);
 
+    // validate user credentials
+    try{
+        let userID = await getUsersDB().findOne({
+            email: email,
+            password: await bcrypt.hash(password, salt)
+        });
+
+        if(userID){
+            console.log('\nLogin successful.');
+             /*
+              NOTE: 
+              - Later on, after login is successful, this function can return a JSON Object
+              containing all the user info so that it could be used on the client side's (ReactJS)
+              global Context. 
+              - Since findOne() already returns the userID, can use this to return all the details to the client, 
+              which could be used in the client's Context.
+              - For now, only returning a boolean.
+            */
+            return true;
+        }
+    }catch(err){
+        console.log(err);
+        return false;
+    }
 };
 
 

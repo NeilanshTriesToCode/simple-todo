@@ -25,7 +25,24 @@ signupRouter.post('/signup', (req, res) => {
 
 // login router/API endpoint
 loginRouter.post('/login', (req, res) => {
-    // extract 
+    // extract email and password from req.body
+    const { email, password } = req.body;
+    
+    // create/sign-up user
+    let flag = loginUser(email, password);
+
+    if(flag){
+        /*
+         NOTE: 
+         Later on, after login is successful, i can send res.json() and send a JSON
+         containing all the user info so that it could be used on the client side's (ReactJS)
+         global Context
+        */
+        res.status(200).send('User is logged in.');
+    }
+    else{
+        res.status(401).send('Invalid credentials.');
+    } 
 });
 
 module.exports = {
