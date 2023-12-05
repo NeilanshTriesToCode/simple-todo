@@ -42,7 +42,7 @@ loginRouter.post('/login', async (req, res) => {
              containing all the user info so that it could be used on the client side's (ReactJS)
              global Context
             */
-            res.status(200).send('User is logged in.');
+            res.status(200).send('Logged in successfully.');
         }
         else{
             console.log('Invalid credentials.');
