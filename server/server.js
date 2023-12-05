@@ -16,8 +16,8 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // configure app
-app.use(cors());          // allow CORS functionality across all routes
-app.use(express.json());     // allow incoming requests to be parsed with JSON payloads
+app.use(cors());                                  // allow CORS functionality across all routes
+app.use(express.json());                          // allow incoming requests to be parsed with JSON payloads
 app.use(express.urlencoded({ extended: true }));   // allow incoming requests to be parsed with URL payloads, so they can be accessed using req.body
 
 // use routes

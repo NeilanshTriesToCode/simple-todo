@@ -38,8 +38,27 @@ const getUsersDB = () => {
 }
 
 // function to signup/create user
-const signupUser = () => {
+const signupUser = async (username, email, password) => {
+    // prepare document to be inserted
+    let newUser = {
+        username: username,
+        email: email,
+        password: bcrypt.hash(password),
+        tasks: []
+    };
 
+    // create an account by
+    // inserting document into the "Users" Collection
+    try{
+        let result = await getUsersDB().insertOne(newUser);
+        if(result.acknowledged){
+            console.log('\nuser added to DB.');
+            return true;
+        }
+    }catch(err){
+        console.log(err);
+        return false;
+    }
 };
 
 // function to login user
