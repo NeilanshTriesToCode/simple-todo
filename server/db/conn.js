@@ -1,5 +1,5 @@
 // file to connect to db and other db-related methods
-const { MongoClient } = require('mongodb');
+const { MongoClient, ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');     // to encrypt passwords
 
@@ -36,6 +36,12 @@ const getDB = () => {
 const getUsersDB = () => {
     return usersDB;
 }
+
+/*
+ 
+  SIGNUP AND LOGIN FUNCTIONS
+
+*/
 
 // function to signup/create user
 const signupUser = async (username, email, password) => {
@@ -102,8 +108,38 @@ const loginUser = async (email, password) => {
     }
 };
 
+/*
+
+ PROFILE-RELATED FUNCTIONS SUCH AS VIEW, EDIT, DELETE & UPDATE
+
+*/
+
+// view user profile (NOT TO BE USED, JUST FOR TESTING)
+const getUserProfile = async (uid) => {
+    // retrieve user data from the Collection
+    let user = await usersDB.findOne({ _id: ObjectId(uid) });
+
+    try{
+        if(user){
+            console.log('User profile retrieved.');
+            return { ...user };
+        }
+        console.log('User profile not found. Incorrect uid.');
+        return false;
+    }catch(err){
+        console.log(err);
+        return false;
+    }
+};
+
+// edit user profile
+const editProfile = (uid) => {
+    
+};
 
 
+
+// exports
 module.exports = {
     connectToServer,
     getDB, 
