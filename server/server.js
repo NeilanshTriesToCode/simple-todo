@@ -10,6 +10,7 @@ const { connectToServer } = require('./db/conn');
 
 // import routes/API endpoints
 const { signupRouter, loginRouter } = require('./routes/auth');
+const { profileRouter } = require('./routes/profile');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(express.urlencoded({ extended: true }));   // allow incoming requests to
 // use routes
 app.use(signupRouter);
 app.use(loginRouter);
+app.use(profileRouter);
 
 app.listen(port, () => {
     console.log(`Server up and running on PORT: ${port}.`);

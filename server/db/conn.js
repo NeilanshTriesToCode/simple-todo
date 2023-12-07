@@ -2,6 +2,7 @@
 const { MongoClient, ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');     // to encrypt passwords
+const { response } = require('express');
 
 const url = process.env.ATLAS_URL;
 
@@ -117,19 +118,30 @@ const loginUser = async (email, password) => {
 // view user profile (NOT TO BE USED, JUST FOR TESTING)
 const getUserProfile = async (uid) => {
     // retrieve user data from the Collection
-    let user = await usersDB.findOne({ _id: ObjectId(uid) });
+    let user = await usersDB.findOne({ _id: new ObjectId(uid) });
 
     try{
+        // if record found
         if(user){
-            console.log('User profile retrieved.');
-            return { ...user };
+            console.log('\nUser profile retrieved.');
+
+            // destructure to exclude user password and avoid
+            // sending it in the response Object
+            let { password, ...userData } = user;   
+
+            // send user data along with response status
+            return { ...userData, status: 200, message: 'Request complete.' }   // 200 = request fulfilled
         }
-        console.log('User profile not found. Incorrect uid.');
-        return false;
+
+        // if record NOT found
+        console.log('\nUser profile not found. Incorrect uid.');
+        return { status: 401, message: 'Record not found. Incorrect uid.' }     // 401 = unauthorized access
+
     }catch(err){
         console.log(err);
-        return false;
+        return { status: 500, message: 'Unknown error occured.' }      // 500 = internal server error
     }
+    
 };
 
 // edit user profile
@@ -146,5 +158,7 @@ module.exports = {
     getUsersDB,
     signupUser, 
     loginUser,
+    getUserProfile,
+    editProfile
 };
 
