@@ -1,7 +1,7 @@
 // Express route for user
 const express = require('express');
 
-const { getUserProfile, updateProfile } = require('../db/conn')
+const { getUserProfile, updateProfile } = require('../db/userProfile');
 
 // define router
 const profileRouter = express.Router();

@@ -1,7 +1,7 @@
 // Express JS route/endpoint for the login and signup pages of the app
 const express = require('express');
 
-const { signupUser, loginUser } = require('../db/conn');
+const { signupUser, loginUser } = require('../db/userProfile');
 
 // define routers for signup and login
 const signupRouter = express.Router();
