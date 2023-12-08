@@ -73,9 +73,6 @@ const signupUser = async (username, email, password) => {
 
 // function to login user
 const loginUser = async (email, password) => {
-    // for hashing
-    var salt = bcrypt.genSaltSync(10);
-
     let user = await usersDB.findOne({ email: email });
        
     // validate user credentials
@@ -165,7 +162,7 @@ const updateProfile = async (uid, updates) => {
     try{
         let result = await usersDB.updateOne(filter, updateData);
         // console.log(result);
-        
+
         // if record update is successful
         if(result.modifiedCount === 1){
             // send user data along with response status
