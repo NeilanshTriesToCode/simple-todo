@@ -1,7 +1,7 @@
 // Express route for user
 const express = require('express');
 
-const { getUserProfile } = require('../db/conn')
+const { getUserProfile, updateProfile } = require('../db/conn')
 
 // define router
 const profileRouter = express.Router();
@@ -16,7 +16,23 @@ profileRouter.get('/profile/:id', async (req, res) => {
     .then(output => {
         console.log(`\n${output.status}: ${output.message}`);
         res.status(output.status).json({ ...output });
-    })
+    });
+});
+
+// defining the PUT endpoint to update the user's profile
+profileRouter.put('/profile/update/:id', async (req, res) => {
+    // get id from URL
+    const { id } = req.params;
+
+    // retrieve JSON Object from req.body
+    const updateItems = req.body;
+
+    // call method to update user profile
+    updateProfile(id, updateItems)
+    .then(output => {
+        console.log(`\n${output.status}: ${output.message}`);
+        res.status(output.status).json({ ...output });
+    });
 });
 
 

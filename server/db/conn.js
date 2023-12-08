@@ -135,7 +135,7 @@ const getUserProfile = async (uid) => {
 
         // if record NOT found
         console.log('\nUser profile not found. Incorrect uid.');
-        return { status: 401, message: 'Record not found. Incorrect uid.' }     // 401 = unauthorized access
+        return { status: 404, message: 'Record not found. Incorrect uid.' }     // 404 = not found
 
     }catch(err){
         console.log(err);
@@ -145,8 +145,40 @@ const getUserProfile = async (uid) => {
 };
 
 // edit user profile
-const editProfile = (uid) => {
-    
+/*
+  ARGS:
+  1. uid: user id passed from the client
+  2. updates: Object containing updated values of fields the user wants to change
+*/
+const updateProfile = async (uid, updates) => {
+    // set filter to retrieve document by id
+    let filter = { _id: new ObjectId(uid) };
+
+    // prepare data to update
+    let updateData = {
+        $set: {
+            ...updates
+        }
+    };
+
+    // retrieve user data from the Collection
+    try{
+        let result = await usersDB.updateOne(filter, updateData);
+        // console.log(result);
+        
+        // if record update is successful
+        if(result.modifiedCount === 1){
+            // send user data along with response status
+            return { status: 201, message: 'Profile updated.' }   // 201 = content has been written successfully
+        }
+        
+        // if record NOT found
+        return { status: 404, message: 'Record not found.'}      // 404 = not found
+
+    }catch(err){
+        console.log(err);
+        return { status: 500, message: 'Unknown error occured.' }      // 500 = internal server error
+    }
 };
 
 
@@ -159,6 +191,6 @@ module.exports = {
     signupUser, 
     loginUser,
     getUserProfile,
-    editProfile
+    updateProfile
 };
 
