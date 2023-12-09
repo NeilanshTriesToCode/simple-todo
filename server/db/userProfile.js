@@ -23,11 +23,16 @@ const signupUser = async (username, email, password) => {
         let result = await getUsersDB().insertOne(newUser);
         if(result.acknowledged){
             console.log('\nUser added to DB.');
-            return true;
+            return { status: 201, message: 'Profile created.' }   // 201 = content has been written successfully
         }
+        
+        // in case couldn't sign up user: maybe because the user already exists
+        return { status: 406, message: 'Profile already exists. Please log in.' }   // 406 = not acceptable
+        
     }catch(err){
         console.log(err);
-        return false;
+        return { status: 500, message: 'An unknown error occurred. Please try again.' }   // 500 = internal server error
+
     }
 };
 
@@ -56,14 +61,20 @@ const loginUser = async (email, password) => {
              the awaited value from the bcrypt.compare() method returns a boolean
              based on whether the entered password and the hashed value from the DB match.
             */
-            return await bcrypt.compare(password, user.password);
+            let isCorrectPassword = await bcrypt.compare(password, user.password);
+
+            return isCorrectPassword ? 
+                { status: 201, message: 'User logged in.' } : 
+                { status: 404, message: 'Incorrect Password. Please try again.' };
             }
-            else{
-                console.log('\nInvalid user creds.');
-                return false;
-            }
+            
+            // couldn't log in due to invalid user credentials
+            console.log('\nInvalid user email.');
+            return { status: 404, message: 'Incorrect email. Please try again.' }   // 404 = not found
+
     }catch(err){
         console.log(err);
+        return { status: 500, message: 'An unknown error occurred. Please try again.' }   // 500 = internal server error
     }
 };
 
@@ -91,7 +102,7 @@ const getUserProfile = async (uid) => {
 
     }catch(err){
         console.log(err);
-        return { status: 500, message: 'Unknown error occured.' }      // 500 = internal server error
+        return { status: 500, message: 'An unknown error occured. Please try again.' }      // 500 = internal server error
     }
 };
 
@@ -128,7 +139,7 @@ const updateProfile = async (uid, updates) => {
 
     }catch(err){
         console.log(err);
-        return { status: 500, message: 'Unknown error occured.' }      // 500 = internal server error
+        return { status: 500, message: 'An unknown error occured. Please try again.' }      // 500 = internal server error
     }
 };
 

@@ -1,7 +1,5 @@
 // file to connect to db and other db-related methods
-const { MongoClient, ObjectId } = require('mongodb');
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');     // to encrypt passwords
+const { MongoClient } = require('mongodb');
 
 const url = process.env.ATLAS_URL;
 
@@ -18,7 +16,7 @@ const connectToServer = () => {
         .then(mongoClient => {
             // initialize db and "Users" Collection
             db = mongoClient.db('simple_todo');      // gets the "simple_todo" DB
-            usersDB = db.collection('users');        // gets the "users" Collection from the "simple_todo" DB
+            usersDB = db.collection('users');        // gets the "Users" Collection from the "simple_todo" DB
 
             console.log('\nConnected to the database.');
         })
