@@ -6,8 +6,8 @@ const express = require('express');
 const tasksRouter = express.Router();
 
 // GET route to return all tasks of the user
-tasksRouter.get('/user/:id/tasks', async () => {
-    
+tasksRouter.get('/tasks', async () => {
+
 
 
 });
