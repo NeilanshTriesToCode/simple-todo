@@ -22,13 +22,14 @@ const getTodos = async (uid) => {
 
             // in case there are no todos currently
             return { status: 204, message: 'No todos found.' };   // 204: request complete, but no content found or to be returned
+            
         }
 
         // user NOT found
         return { status: 404, message: 'Record not found. Incorrect uid.' }     // 404 = not found
     }catch(err){
         console.log(err);
-
+        return { status: 500, message: 'An unknown error occured. Please try again.' }      // 500 = internal server error
     }
     
 }
