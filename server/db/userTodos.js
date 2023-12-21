@@ -30,8 +30,16 @@ const getTodos = async (uid) => {
     }catch(err){
         console.log(err);
         return { status: 500, message: 'An unknown error occured. Please try again.' }      // 500 = internal server error
-    }
-    
+    } 
+};
+
+// function to add a TODO
+const addTodo = async (uid, todo) => {
+    // set filter to retrieve document by id
+    let filter = { _id: new ObjectId(uid) };
+
+    // prepare data to add
+
 }
 
 module.exports = {
