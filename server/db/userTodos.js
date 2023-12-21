@@ -7,11 +7,11 @@ const { getUsersDB } = require('./conn');
 
 // TEST function to get all tasks of the user
 const getTodos = async (uid) => {
-    // retrieve user details 
-    let user = await getUsersDB().findOne({ _id: new ObjectId(uid) });
-
     // return todos if user exists
     try{
+         // retrieve user details 
+        let user = await getUsersDB().findOne({ _id: new ObjectId(uid) });
+
         // if user found
         if(user){
             let { todos } = user;
@@ -21,8 +21,8 @@ const getTodos = async (uid) => {
             }
 
             // in case there are no todos currently
-            return { status: 204, message: 'No todos found.' };   // 204: request complete, but no content found or to be returned
-            
+            return { status: 204, message: 'No todos found.' };   // 204 = request complete, but no content found or to be returned
+
         }
 
         // user NOT found
@@ -32,4 +32,8 @@ const getTodos = async (uid) => {
         return { status: 500, message: 'An unknown error occured. Please try again.' }      // 500 = internal server error
     }
     
+}
+
+module.exports = {
+    getTodos,
 }
