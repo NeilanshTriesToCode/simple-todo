@@ -17,10 +17,12 @@ const getTodos = async (uid) => {
             let { todos } = user;
             // check if the "todos" inside the user document is an empty Object
             if(Object.keys(todos).length > 0){
+                console.log('\nTo-dos retrieved.');
                 return { status: 200, message: 'Request complete.',  payload: { ...todos } };
             }
 
             // in case there are no todos currently
+            console.log('\nNo to-dos found.');
             return { status: 200, message: 'No todos found.' };   // 204 = request complete, but no content found or to be returned
 
         }
@@ -87,10 +89,12 @@ const addTodo = async (uid, todo) => {
         // if add is successful
         if(result.modifiedCount === 1){
             // return response status
+            console.log('\nAdded to-do to DB.');
             return { status: 201, message: 'To-do added successfully.' }   // 201 = content has been written successfully
         }
         
         // if record NOT found
+        console.log('\nIncorrect uid.');
         return { status: 404, message: 'Record not found.' }      // 404 = not found
 
     }catch(err){
