@@ -28,10 +28,10 @@ todosRouter.post('/profile/:id/todos/add', async (req, res) => {
     console.log(newTodo);
 
     // call function to add new todo to DB
-    // addTodo(id, newTodo).then(output => {
-    //     console.log(`\n${output.status}: ${output.message}`);
-    //     res.status(output.status).json({ ...output });
-    // });
+    addTodo(id, newTodo).then(output => {
+        console.log(`\n${output.status}: ${output.message}`);
+        res.status(output.status).json({ ...output });
+    });
 });
 
 module.exports = {
