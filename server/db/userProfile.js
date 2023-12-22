@@ -130,7 +130,7 @@ const updateProfile = async (uid, updates) => {
 
         // if record update is successful
         if(result.modifiedCount === 1){
-            // send user data along with response status
+            // return response status
             return { status: 201, message: 'Profile updated.' }   // 201 = content has been written successfully
         }
         

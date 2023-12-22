@@ -25,7 +25,7 @@ profileRouter.put('/profile/update/:id', async (req, res) => {
     const { id } = req.params;
 
     // retrieve JSON Object from req.body
-    const updateItems = req.body;
+    const { updateItems } = req.body;
 
     // call method to update user profile
     updateProfile(id, updateItems)
