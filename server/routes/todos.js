@@ -25,7 +25,7 @@ todosRouter.post('/profile/:id/todos/add', async (req, res) => {
 
     // extract todo from request body
     const { newTodo } = req.body; 
-    console.log(newTodo);
+    // console.log(newTodo);
 
     // call function to add new todo to DB
     addTodo(id, newTodo).then(output => {

@@ -72,7 +72,9 @@ const addTodo = async (uid, todo) => {
         $set: {
             // add a new item inside the "todos" Object, nested within the user's document
             [`todos.${ newTodoId }`] : {
-                ...todo 
+                ...todo,  // will contain to-do title and description
+                isComplete: false,
+                createdAt: new Date()  // current date 
             }
         },
     };
