@@ -28,10 +28,10 @@ const getTodos = async (uid) => {
         }
 
         // user NOT found
-        return { status: 404, message: 'Record not found. Incorrect uid.' }     // 404 = not found
+        return { status: 404, message: 'Record not found. Incorrect uid.' };     // 404 = not found
     }catch(err){
         console.log(err);
-        return { status: 500, message: 'An unknown error occurred. Please try again.' }      // 500 = internal server error
+        return { status: 500, message: 'An unknown error occurred. Please try again.' };      // 500 = internal server error
     } 
 };
 
@@ -76,7 +76,7 @@ const addTodo = async (uid, todo) => {
             [`todos.${ newTodoId }`] : {
                 ...todo,  // will contain to-do title and description
                 isComplete: false,
-                createdAt: new Date()  // current date 
+                createdAt: new Date("<YYYY-mm-ddTHH:MM:ss>")  // current date 
             }
         },
     };
@@ -90,21 +90,54 @@ const addTodo = async (uid, todo) => {
         if(result.modifiedCount === 1){
             // return response status
             console.log('\nAdded to-do to DB.');
-            return { status: 201, message: 'To-do added successfully.' }   // 201 = content has been written successfully
+            return { status: 201, message: 'To-do added successfully.' };
         }
         
         // if record NOT found
         console.log('\nIncorrect uid.');
-        return { status: 404, message: 'Record not found.' }      // 404 = not found
+        return { status: 404, message: 'Record not found.' };   
 
     }catch(err){
         console.log(err);
-        return { status: 500, message: 'An unknown error occurred: Couldn\'t add the new task. Please try again.' }      // 500 = internal server error
+        return { status: 500, message: 'An unknown error occurred: Couldn\'t add the new task. Please try again.' };  
     }
+};
 
-}
+// function to remove TO-Do
+// REMINDER: To-dos are stored within the "todos" Object contained within the corresponding user's document
+const removeTodo = async (uid, todoId) => {
+    // set filter to retrieve document by id
+    let filter = { _id: new ObjectId(uid) };
+
+    // set up to remove todo with the matching todoId from the "todos" Object
+
+    /* think of it as updating the corresponding user's document to remove the appropriate todo
+       stored from the "todos" Object within the document.
+    */
+    let removeTodo = {
+        $set: {
+            // add a new item inside the "todos" Object, nested within the user's document
+            [`todos.${ newTodoId }`] : {
+                ...todo,  // will contain to-do title and description
+                isComplete: false,
+                createdAt: new Date("<YYYY-mm-ddTHH:MM:ss>")  // current date 
+            }
+        },
+    };
+
+    // remove the TO-DO
+    try {
+        let result = await getUsersDB().updateOne(filter, updateTodo);
+
+
+    } catch (err) {
+        console.log(err);
+        return { status: 500, message: 'An unknown error occurred: Couldn\'t add the new task. Please try again.' };  
+    }
+};
 
 module.exports = {
     getTodos,
     addTodo,
-}
+    removeTodo,
+};
