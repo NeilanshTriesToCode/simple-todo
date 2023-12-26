@@ -115,19 +115,23 @@ const removeTodo = async (uid, todoId) => {
        stored from the "todos" Object within the document.
     */
     let removeTodo = {
-        $set: {
+        $unset: {
             // add a new item inside the "todos" Object, nested within the user's document
-            [`todos.${ newTodoId }`] : {
-                ...todo,  // will contain to-do title and description
-                isComplete: false,
-                createdAt: new Date("<YYYY-mm-ddTHH:MM:ss>")  // current date 
-            }
+            [`todos.${ todoId }`] : ''
         },
     };
 
+    let options = { returnOriginal: false };
+
     // remove the TO-DO
     try {
-        let result = await getUsersDB().updateOne(filter, updateTodo);
+        let result = await getUsersDB().findOneAndUpdate(filter, removeTodo, options);
+
+        if(result.ok === 1){
+            return { status: 201, message: 'Removed To-do from DB.' };
+        }
+
+        return { status: 404, message: 'Could\'t remove to-do.' };
 
 
     } catch (err) {
