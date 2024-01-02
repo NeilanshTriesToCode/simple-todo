@@ -1,7 +1,7 @@
 // Express route for tasks
 const express = require('express');
 
-const { getTodos, addTodo } = require('../db/userTodos');
+const { getTodos, addTodo, removeTodo } = require('../db/userTodos');
 
 // define router
 const todosRouter = express.Router();
@@ -29,6 +29,20 @@ todosRouter.post('/profile/:id/todos/add', async (req, res) => {
 
     // call function to add new todo to DB
     addTodo(id, newTodo).then(output => {
+        console.log(`\n${output.status}: ${output.message}`);
+        res.status(output.status).json({ ...output });
+    });
+});
+
+// PUT route to delete existing to-do
+todosRouter.put('/profile/:id/todos/remove', async (req, res) => {
+    const { id } = req.params;
+
+    // extract todo id from request body
+    const { todoId } = req.body; 
+
+    // call function to remove to-do
+    removeTodo(id, todoId).then(output => {
         console.log(`\n${output.status}: ${output.message}`);
         res.status(output.status).json({ ...output });
     });
